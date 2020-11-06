@@ -34,15 +34,23 @@ func (t *task) markAsComplete() {
 }
 
 func (t *taskList) printCompletedTasks() {
+	fmt.Println("Completed Tasks...")
+	completedTasksCount := 0
 	for _, task := range t.tasks {
 		if task.isCompleted {
 			fmt.Println("Name => ", task.name)
 			fmt.Println("Description => ", task.description)
+			completedTasksCount++
 		}
+	}
+
+	if completedTasksCount <= 0 {
+		fmt.Println("No completed tasks yet!")
 	}
 }
 
 func (t *taskList) printTasksInProgress() {
+	fmt.Println("Tasks In Progress...")
 	for _, task := range t.tasks {
 		if !task.isCompleted {
 			fmt.Println("Name =>", task.name)
@@ -51,35 +59,65 @@ func (t *taskList) printTasksInProgress() {
 }
 
 func main() {
-	fmt.Println("=== Tasks Summary ===")
-	task1 := &task{
-		name:        "Task 1",
+	tfr1 := &task{
+		name:        "Tâche 1",
 		description: "Ma premiere tâche",
 	}
-	task2 := &task{
-		name:        "Task 2",
+	tfr2 := &task{
+		name:        "Tâche 2",
 		description: "Ma deuxieme tâche",
 	}
-	task3 := &task{
-		name:        "Task 3",
+	tfr3 := &task{
+		name:        "Tâche 3",
 		description: "Ma troisième tâche",
 	}
 
-	taskList := &taskList{
+	frenchTasks := &taskList{
 		tasks: []*task{
-			task1, task2,
+			tfr1, tfr2,
 		},
 	}
 
-	taskList.addToList(task3)
-	taskList.printCompletedTasks()
-	taskList.tasks[0].markAsComplete()
+	frenchTasks.addToList(tfr3)
+	frenchTasks.tasks[0].markAsComplete()
+
+	// Introduce map to handle multiple task lists (E.G. by subject, by user, etcetera)
+	tasksMap := make(map[string]*taskList)
+	tasksMap["French"] = frenchTasks
+
+	tEnglish1 := &task{
+		name:        "Task 1",
+		description: "My first task",
+	}
+	tEnglish2 := &task{
+		name:        "Task 2",
+		description: "My second task",
+	}
+	tEnglish3 := &task{
+		name:        "Task 3",
+		description: "My third task",
+	}
+
+	englishTasks := &taskList{
+		tasks: []*task{
+			tEnglish1, tEnglish2, tEnglish3,
+		},
+	}
+
+	tasksMap["English"] = englishTasks
+
+	// Print task elements by retrieving list from map
+
+	fmt.Println("=== French Tasks Summary ===")
+	fmt.Print("\n")
+	tasksMap["French"].printTasksInProgress()
+	fmt.Print("\n")
+	tasksMap["French"].printCompletedTasks()
 
 	fmt.Print("\n")
-	fmt.Println("Tasks In Progress...")
-	taskList.printTasksInProgress()
-
+	fmt.Println("=== English Tasks Summary ===")
 	fmt.Print("\n")
-	fmt.Println("Completed Tasks...")
-	taskList.printCompletedTasks()
+	tasksMap["English"].printTasksInProgress()
+	fmt.Print("\n")
+	tasksMap["English"].printCompletedTasks()
 }
