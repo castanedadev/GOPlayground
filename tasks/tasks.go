@@ -33,6 +33,53 @@ func (t *task) markAsComplete() {
 	t.isCompleted = true
 }
 
+func (t *taskList) printCompletedTasks() {
+	for _, task := range t.tasks {
+		if task.isCompleted {
+			fmt.Println("Name => ", task.name)
+			fmt.Println("Description => ", task.description)
+		}
+	}
+}
+
+func (t *taskList) printTasksInProgress() {
+	for _, task := range t.tasks {
+		if !task.isCompleted {
+			fmt.Println("Name =>", task.name)
+		}
+	}
+}
+
 func main() {
 	fmt.Println("=== Tasks Summary ===")
+	task1 := &task{
+		name:        "Task 1",
+		description: "Ma premiere tâche",
+	}
+	task2 := &task{
+		name:        "Task 2",
+		description: "Ma deuxieme tâche",
+	}
+	task3 := &task{
+		name:        "Task 3",
+		description: "Ma troisième tâche",
+	}
+
+	taskList := &taskList{
+		tasks: []*task{
+			task1, task2,
+		},
+	}
+
+	taskList.addToList(task3)
+	taskList.printCompletedTasks()
+	taskList.tasks[0].markAsComplete()
+
+	fmt.Print("\n")
+	fmt.Println("Tasks In Progress...")
+	taskList.printTasksInProgress()
+
+	fmt.Print("\n")
+	fmt.Println("Completed Tasks...")
+	taskList.printCompletedTasks()
 }
